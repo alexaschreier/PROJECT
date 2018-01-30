@@ -3,6 +3,82 @@ title: "R Notebook"
 output: html_notebook
 ---
 
+1. Getting the Data:
+
+
+```{r}
+# we are opening excel file
+# we need to install "readxl": install.packages("readxl")
+library(readxl)
+
+# to ease reproducibility, store data online, and get data from the link to it.
+temp = tempfile(fileext = ".xlsx") # use always with Excel
+dataURL <- "https://github.com/alexaschreier/data/raw/master/data.xlsx" # link to data
+download.file(dataURL, destfile=temp, mode='wb')  # file will be downloaded temporarily
+
+Parkdata = read_excel(temp, sheet =1)
+head(Parkdata,12)
+```
+
+
+```{r}
+names(Parkdata)
+```
+
+```{r}
+#This code corrects the variable names:
+names(Parkdata)=gsub("\r\n", " ", names(Parkdata))
+names(Parkdata)=gsub(" ", "_", names(Parkdata))
+```
+
+
+```{r}
+names(Parkdata)
+```
+
+```{r}
+str(Parkdata)
+```
+
+
+
+```{r}
+summary(Parkdata)
+```
+```{r}
+head(Parkdata)
+```
+
+```{r}
+library(moments)
+```
+
+```{r}
+skewness(Parkdata[,c(4:11)],na.rm = T) 
+```
+
+```{r}
+kurtosis(Parkdata[,c(4:11)],na.rm = T)
+```
+```{r}
+library(stringr)
+```
+
+```{r}
+years=names(kurtosis(Parkdata[,c(4:11)],na.rm = T))
+
+years=str_extract(years, "\\d+")
+
+kt=kurtosis(Parkdata[,c(4:11)],na.rm = T)
+sk=skewness(Parkdata[,c(4:11)],na.rm = T)
+par(mfrow=c(2,1))
+plot(years,sk,type = 'l',col='blue',ylab='skewness')
+plot(years,kt,type = 'l',col='red',ylab='kurtosis')
+```
+
+
+
+
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
 
 Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
