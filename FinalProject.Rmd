@@ -1,0 +1,53 @@
+
+Title: Final Project
+
+By: Alexa Schreier
+
+Date: 1 February 2018
+
+Part 1. Getting the Data
+This data was collected and made available by the United States' National Park Service. 
+```{r eval=TRUE}
+
+library(readxl)
+temp = tempfile(fileext = ".xlsx")
+dataURL <- "https://github.com/alexaschreier/data/raw/master/data.xlsx" 
+download.file(dataURL, destfile=temp, mode='wb') 
+Parkdata = read_excel(temp, sheet =1)
+```
+
+Part 2. Exploring the Data
+The data explored below includes records of all areas owned and managed by the National Park Service. The data is broken out by region, park name, and park type. For each location, the Park Service has tracked the number of recreation visits to each location, as well as the various ways in which people stay in the park, from backcountry or tent campers, to RV campers or concessioner lodging.
+```{r eval=T}
+#View the beginning of the data set
+head(Parkdata)
+```
+
+```{r}
+#View the names of the data points
+names(Parkdata)
+```
+
+```{r}
+#View the structure of the data 
+str(Parkdata)
+```
+
+```{r}
+#View a summary of the data
+summary(Parkdata)
+```
+
+Part 2.1 Cleaning the Data
+```{r eval=T}
+#These commands correct the variable names:
+names(Parkdata)=gsub("\r\n", " ", names(Parkdata))
+names(Parkdata)=gsub(" ", "_", names(Parkdata))
+```
+
+```{r}
+#Test to see that names have been corrected
+names(Parkdata)
+```
+
+Part 3. Graphing the Data 

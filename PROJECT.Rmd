@@ -40,6 +40,10 @@ names(Parkdata)
 str(Parkdata)
 ```
 
+```{r}
+help(summary)
+```
+
 
 
 ```{r}
