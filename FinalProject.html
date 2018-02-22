@@ -123,8 +123,8 @@ $(document).ready(function () {
 
 <p>Title: Final Project</p>
 <p>By: Alexa Schreier</p>
-<p>Date: 1 February 2018</p>
-<p>Part 1. Getting the Data This data was collected and made available by the United States’ National Park Service.</p>
+<p>Date: 15 February 2018</p>
+<p>Part 1. Getting the Data The data used for this report was collected and made available by the United States’ National Park Service. The data can be found at: [(<a href="https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Annual%20Visitation%20by%20Park%20Type%20or%20Region%20(1979%20-%20Last%20Calendar%20Year)">https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Annual%20Visitation%20by%20Park%20Type%20or%20Region%20(1979%20-%20Last%20Calendar%20Year)</a>)]</p>
 <pre class="r"><code>library(readxl)
 temp = tempfile(fileext = &quot;.xlsx&quot;)
 dataURL &lt;- &quot;https://github.com/alexaschreier/data/raw/master/data.xlsx&quot; 
@@ -206,7 +206,7 @@ summary(Parkdata)</code></pre>
 ##  Mean   :   401.6                 Mean   :   5736     
 ##  3rd Qu.:     0.0                 3rd Qu.:      0     
 ##  Max.   :103004.0                 Max.   :1198527</code></pre>
-<p>Part 2.1 Cleaning the Data</p>
+<p>Part 2.1 Cleaning the Data It’s important to clean the data to make sure all variable names appear as desired and are intuitive for any person who may be looking at the data or research product.</p>
 <pre class="r"><code>#These commands correct the variable names:
 names(Parkdata)=gsub(&quot;\r\n&quot;, &quot; &quot;, names(Parkdata))
 names(Parkdata)=gsub(&quot; &quot;, &quot;_&quot;, names(Parkdata))</code></pre>
@@ -219,6 +219,15 @@ names(Parkdata)</code></pre>
 ##  [9] &quot;Backcountry_Campers&quot;           &quot;Non-recreation_Overnight_Stay&quot;
 ## [11] &quot;Misc._Overnight_Stay&quot;</code></pre>
 <p>Part 3. Graphing the Data</p>
+<p>Part 4. Creating a Map</p>
+<pre class="r"><code>compressedMap=&quot;https://github.com/alexaschreier/Shapefile/blob/master/nps_boundary.shp.zip&quot;</code></pre>
+<pre class="r"><code>library(utils)
+temp=tempfile()
+download.file(compressedMap, temp)
+unzip(temp)</code></pre>
+<pre><code>## Warning in unzip(temp): error 1 in extracting from zip file</code></pre>
+<pre class="r"><code>(maps=list.files(pattern = 'shp'))</code></pre>
+<pre><code>## character(0)</code></pre>
 
 
 
