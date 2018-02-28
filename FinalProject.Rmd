@@ -97,7 +97,7 @@ demoSimi=daisy(Parkdata[,c(3:7)],metric = "euclidean",
 
 Part 4. Creating a Map
 ```{r}
-compressedMap="https://github.com/alexaschreier/Shapefile/raw/master/nps_boundary.shp.zip"
+compressedMap="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary.zip"
 ```
 
 ```{r}
@@ -111,12 +111,20 @@ unzip(temp)
 ```
 
 ```{r}
-parkzipMap <- rgdal::readOGR("nps_boundary.shp",stringsAsFactors=F)
+parkzipMap <- rgdal::readOGR("nps_boundary/nps_boundary.shp",stringsAsFactors=F)
 ```
 
 ```{r}
 names(parkzipMap)
-````
+```
+```{r}
+str(parkzipMap@data$UNIT_TYPE)
+```
+
+
+```{r}
+table(sub$UNIT_TYPE)
+```
 
 
 
