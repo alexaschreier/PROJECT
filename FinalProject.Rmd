@@ -75,11 +75,11 @@ head(NPS_Park_Type)
 Part 3.2 Clustering 
 ```{r}
 #Make sure the unit to be cluster appears just once in a column
-length(Parkdata$Recreation_Visits)==length(unique(Parkdata$Recreation_Visits))
+length(Parkdata$Park_Name)==length(unique(Parkdata$Park_Name))
 ```
 ```{r}
 #Use the column with the names of unit of analysis as the row names
-row.names(Parkdata)=Parkdata$Recreation_Visits
+row.names(Parkdata)=Parkdata$Park_Name
 ```
 
 ```{r}
