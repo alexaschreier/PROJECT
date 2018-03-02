@@ -10,7 +10,7 @@ By: Alexa Schreier
 
 Date: 27 February 2018
 
-Part 1. Getting the Data
+1. Getting the Data
 The data used for this report was collected and made available by the United States' National Park Service. The data can be found and accessed at the following site: [(https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Annual%20Visitation%20by%20Park%20Type%20or%20Region%20(1979%20-%20Last%20Calendar%20Year))] 
 ```{r eval=TRUE}
 #Import data into RStudio library
@@ -18,14 +18,15 @@ library(readxl)
 library(cluster)
 library(utils)
 library(rgdal)
-library(jsonlite) 
+library(jsonlite)
+library(tidyverse)
 temp = tempfile(fileext = ".xlsx")
 dataURL <- "https://github.com/alexaschreier/data/raw/master/data.xlsx" 
 download.file(dataURL, destfile=temp, mode='wb') 
 Parkdata = read_excel(temp, sheet =1)
 ```
 
-Part 2. Exploring the Data
+2. Exploring the Data
 The data explored below includes records of all areas owned and managed by the United States' National Park Service. The data is broken out by region, park name, and park type. For each location, the Park Service has tracked the number of recreation visits to that location, as well as the various ways in which people spend the night in the park, from backcountry or tent campers, to RV campers or concessioner lodging. Exploring the data set allows us to better understand the size of our data set and the variables that are included. There are a number of different ways to view the data, each of which is outlined below. 
 ```{r eval=T}
 #View the beginning of the data set
@@ -39,13 +40,17 @@ names(Parkdata)
 #View the structure of the data 
 str(Parkdata)
 ```
+
 ```{r}
 #View a summary of the data
 summary(Parkdata)
 ```
 
-Part 2.1 Cleaning the Data
+2.1 Cleaning the Data
 It's important to clean the data to make sure all variable names appear as desired and are intuitive for any person who may be looking at the data or research product. Someone should be able to understand what they're looking at without necessarily being very familiar with the data. 
+
+2.1 Cleaning the Data
+Part 1: Correcting Variable Names
 ```{r eval=T}
 #These commands correct the variable names:
 names(Parkdata)=gsub("\r\n", " ", names(Parkdata))
@@ -57,45 +62,34 @@ names(Parkdata)=gsub(" ", "_", names(Parkdata))
 names(Parkdata)
 ```
 
-Part 3. Graphing the Data 
-Graphing the data we're using allows us to better understand and visualize relationships between different variables. 
-
-3.1 Agreggating
+2.1 Cleaning the Data
+Part 2. Removing Duplicates 
 ```{r}
-numericColumns =c("amount")
-aggregateBY='Park Type'
-
-NPS_Park_Type=aggregate(Parkdata[,numericColumns], by=list(Parkdata[,aggregateBY]), sum )
-names(NPS_Park_Type)=c('Park Type','amount')
-```
-```{r}
-head(NPS_Park_Type)
-```
-
-Part 3.2 Clustering 
-```{r}
-#Make sure the unit to be cluster appears just once in a column
 length(Parkdata$Park_Name)==length(unique(Parkdata$Park_Name))
 ```
 ```{r}
-#Use the column with the names of unit of analysis as the row names
-row.names(Parkdata)=Parkdata$Park_Name
+Parkdata[duplicated(Parkdata$Park_Name),]
 ```
 
 ```{r}
-#Make sure the columns that you will use for clustering (input columns) are in the right type.
-str(Parkdata[,c(3:7)])
+repeated='Klondike Gold Rush'
+Parkdata[Parkdata$Park_Name ==repeated,]
 ```
 
 ```{r}
-# metric chosen: 'euclidean' - valid just for numerica data
-# you can try "manhattan" in metric to benefit similarity over discrepancies
-# you can try "gower" if you have numbers and factors.
-demoSimi=daisy(Parkdata[,c(3:7)],metric = "euclidean",
-               stand=TRUE) # standardizing
+repeated='Klondike Gold Rush'
+Parkdata[(Parkdata$Park_Name ==repeated) & (Parkdata$Region =='Pacific West Region'),]
+```
+```{r}
+repeated='Klondike Gold Rush'
+Parkdata=Parkdata[!((Parkdata$Park_Name ==repeated) & (Parkdata$Region =='Pacific West Region')),]
 ```
 
-Part 4. Creating a Map
+3. Graphing the Data 
+Graphing the data we're using allows us to better understand and visualize relationships between different variables. 
+
+3.1 Creating a Map
+Mapping our data allows us to visualize the way in which visitors are interacting with public land mangaged by the National Park Service.
 ```{r}
 compressedMap="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary.zip"
 ```
@@ -117,15 +111,166 @@ parkzipMap <- rgdal::readOGR("nps_boundary/nps_boundary.shp",stringsAsFactors=F)
 ```{r}
 names(parkzipMap)
 ```
+
 ```{r}
-str(parkzipMap@data$UNIT_TYPE)
+length(unique(parkzipMap$UNIT_NAME))
 ```
 
+```{r}
+length(parkzipMap$UNIT_NAME)
+```
 
 ```{r}
 table(sub$UNIT_TYPE)
 ```
+```{r}
+row.names(Parkdata)=NULL
+totalMap=merge(parkzipMap,Parkdata,by.x='UNIT_NAME',by.y='Park_Name')
+```
 
+```{r}
+names(totalMap)
+```
+```{r}
+table(totalMap$Region)
+```
 
+```{r}
+AlaskaMap=totalMap[totalMap$Region %in% 'Alaska Region',]
+IntermounMap=totalMap[totalMap$Region %in% 'Intermountain Region',]
+midWMap=totalMap[totalMap$Region %in% 'Midwest Region',]
+natioCapMap=totalMap[totalMap$Region %in% 'National Capital Region',]
+northEMap=totalMap[totalMap$Region %in% 'Northeast Region',]
+pacWestMap=totalMap[totalMap$Region %in% 'Pacific West Region',]
+southEMap=totalMap[totalMap$Region %in% 'Southeast Region',]
+```
 
+3.1. Creating a Map
+Part 1: Define the input for Alaska Region Map:
+```{r, eval=FALSE}
+varToPlot=AlaskaMap$Recreation_Visits
+```
 
+3.1. Creating a Map
+Part 1.1: Get colors and intervals for Alaska Region Map:
+```{r, eval=FALSE}
+library(RColorBrewer)
+library(classInt)
+numberOfClasses = 3
+colorForScale='YlGnBu'
+colors = brewer.pal(numberOfClasses, colorForScale)
+intervals <- classIntervals(varToPlot, numberOfClasses, 
+                            style = "quantile",
+                            dataPrecision=2)
+colorPallette <- findColours(intervals, colors)
+```
+
+```{r}
+
+legendText="Count of visits"
+shrinkLegend=0.7
+title="Visits"
+
+plot(Alaska,col='white',main=title)
+plot(AlaskaMap, col = colorPallette,border='grey',add=TRUE)
+legend('topright', legend = names(attr(colorPallette, "table")), 
+       fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
+       bty = "n",
+       title=legendText)
+```
+
+3.1. Creating a Map
+Part 2: Define the input for Intermountain Region Map
+```{r, eval=FALSE}
+varToPlot=IntermounMap$Recreation_Visits
+```
+
+3.1. Creating a Map
+Part 2.1: Get colors and intervals for Intermountain Region Map
+```{r, eval=FALSE}
+library(RColorBrewer)
+library(classInt)
+numberOfClasses = 3
+colorForScale='YlGnBu'
+colors = brewer.pal(numberOfClasses, colorForScale)
+intervals <- classIntervals(varToPlot, numberOfClasses, 
+                            style = "quantile",
+                            dataPrecision=2)
+colorPallette <- findColours(intervals, colors)
+```
+
+```{r}
+legendText="Count of visits"
+shrinkLegend=0.7
+title="Visits"
+
+plot(IntermounMap, col = colorPallette,border='grey',main=title)
+legend('topright', legend = names(attr(colorPallette, "table")), 
+       fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
+       bty = "n",
+       title=legendText)
+```
+
+3.1. Creating a Map
+Part 3: Define the input for Midwest Region Map
+```{r, eval=FALSE}
+varToPlot=midWMap$Recreation_Visits
+```
+
+3.1. Creating a Map
+Part 3.1: Get colors and intervals for Midwest Region Map
+```{r, eval=FALSE}
+library(RColorBrewer)
+library(classInt)
+numberOfClasses = 3
+colorForScale='YlGnBu'
+colors = brewer.pal(numberOfClasses, colorForScale)
+intervals <- classIntervals(varToPlot, numberOfClasses, 
+                            style = "quantile",
+                            dataPrecision=2)
+colorPallette <- findColours(intervals, colors)
+```
+
+```{r}
+legendText="Count of visits"
+shrinkLegend=0.7
+title="Visits"
+
+plot(midWMap, col = colorPallette,border='grey',main=title)
+legend('topright', legend = names(attr(colorPallette, "table")), 
+       fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
+       bty = "n",
+       title=legendText)
+```
+
+3.1. Creating a Map
+Part 4: Define the input for Pacific West Region Map
+```{r, eval=FALSE}
+varToPlot=pacWestMap$Recreation_Visits
+```
+
+3.1. Creating a Map
+Part 4.1: Get colors and intervals for Pacific West Region Map
+```{r, eval=FALSE}
+library(RColorBrewer)
+library(classInt)
+numberOfClasses = 3
+colorForScale='YlGnBu'
+colors = brewer.pal(numberOfClasses, colorForScale)
+intervals <- classIntervals(varToPlot, numberOfClasses, 
+                            style = "quantile",
+                            dataPrecision=2)
+colorPallette <- findColours(intervals, colors)
+```
+
+```{r}
+legendText="Count of visits"
+shrinkLegend=0.7
+title="Visits"
+
+plot(pacWestMap, col = colorPallette,border='grey',main=title)
+legend('topright', legend = names(attr(colorPallette, "table")), 
+       fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
+       bty = "n",
+       title=legendText)
+```
