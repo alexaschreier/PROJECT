@@ -153,6 +153,28 @@ varToPlot=AlaskaMap$Recreation_Visits
 
 3.1. Creating a Map
 Part 1.1: Get colors and intervals for Alaska Region Map:
+```{r}
+compressedMap_alaska="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/alaska.zip"
+```
+
+```{r}
+temp=tempfile()
+download.file(compressedMap, temp)
+unzip(temp)
+```
+```{r}
+(maps=list.files(pattern = 'shp'))
+```
+```{r}
+alaska_zipMap <- rgdal::readOGR("nps_boundary/alaska.shp",stringsAsFactors=F)
+```
+```{r}
+names(alaska_zipMap)
+```
+```{r}
+plot(alaska_zipMap)
+```
+
 ```{r, eval=FALSE}
 library(RColorBrewer)
 library(classInt)
@@ -166,17 +188,17 @@ colorPallette <- findColours(intervals, colors)
 ```
 
 ```{r}
-
 legendText="Count of visits"
 shrinkLegend=0.7
 title="Visits"
 
-plot(Alaska,col='white',main=title)
+plot(alaska_zipMap,col='white',main=title)
 plot(AlaskaMap, col = colorPallette,border='grey',add=TRUE)
 legend('topright', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
        bty = "n",
        title=legendText)
+dev.off()
 ```
 
 3.1. Creating a Map
