@@ -411,3 +411,111 @@ legend('topright', legend = names(attr(colorPallette, "table")),
        bty = "n",
        title=legendText)
 ```
+
+3.1. Creating a Map
+Part 6: Define the input for the Pacific West Region Map:
+```{r, eval=FALSE}
+varToPlot=pacWestMap$Recreation_Visits
+```
+
+3.1. Creating a Map
+Part 6.1: Get colors and intervals for the Pacific West Region Map:
+```{r}
+compressedMap_pacificwest="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/pacificwest.zip"
+```
+
+```{r}
+temp=tempfile()
+download.file(compressedMap, temp)
+unzip(temp)
+```
+```{r}
+(maps=list.files(pattern = 'shp'))
+```
+```{r}
+pacificwest_zipMap <- rgdal::readOGR("nps_boundary/pacificwest.shp",stringsAsFactors=F)
+```
+```{r}
+names(pacificwest_zipMap)
+```
+```{r}
+plot(pacificwest_zipMap)
+```
+```{r, eval=FALSE}
+library(RColorBrewer)
+library(classInt)
+numberOfClasses = 3
+colorForScale='YlGnBu'
+colors = brewer.pal(numberOfClasses, colorForScale)
+intervals <- classIntervals(varToPlot, numberOfClasses, 
+                            style = "quantile",
+                            dataPrecision=2)
+colorPallette <- findColours(intervals, colors)
+```
+
+```{r}
+legendText="Count of visits"
+shrinkLegend=0.7
+title="Visits"
+
+plot(pacificwest_zipMap,col='white',main=title)
+plot(pacWestMap, col = colorPallette,border='grey',add=TRUE)
+legend('topright', legend = names(attr(colorPallette, "table")), 
+       fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
+       bty = "n",
+       title=legendText)
+```
+
+3.1. Creating a Map
+Part 7: Define the input for the South East Region Map:
+```{r, eval=FALSE}
+varToPlot=southEMap$Recreation_Visits
+```
+
+3.1. Creating a Map
+Part 7.1: Get colors and intervals for the South East Region Map:
+```{r}
+compressedMap_southeast="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/southeast.zip"
+```
+
+```{r}
+temp=tempfile()
+download.file(compressedMap, temp)
+unzip(temp)
+```
+```{r}
+(maps=list.files(pattern = 'shp'))
+```
+```{r}
+southeast_zipMap <- rgdal::readOGR("nps_boundary/southeast.shp",stringsAsFactors=F)
+```
+```{r}
+names(southeast_zipMap)
+```
+```{r}
+plot(southeast_zipMap)
+```
+```{r, eval=FALSE}
+library(RColorBrewer)
+library(classInt)
+numberOfClasses = 3
+colorForScale='YlGnBu'
+colors = brewer.pal(numberOfClasses, colorForScale)
+intervals <- classIntervals(varToPlot, numberOfClasses, 
+                            style = "quantile",
+                            dataPrecision=2)
+colorPallette <- findColours(intervals, colors)
+```
+
+```{r}
+legendText="Count of visits"
+shrinkLegend=0.7
+title="Visits"
+
+plot(southeast_zipMap,col='white',main=title)
+plot(southEMap, col = colorPallette,border='grey',add=TRUE)
+legend('topright', legend = names(attr(colorPallette, "table")), 
+       fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
+       bty = "n",
+       title=legendText)
+```
