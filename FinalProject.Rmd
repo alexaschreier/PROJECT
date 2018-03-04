@@ -183,7 +183,7 @@ legendText="Count of visits"
 shrinkLegend=0.7
 title="Visits"
 
-##plot(alaska_zipMap,col='white',main=title)
+plot(alaska_zipMap,col='white',main=title)
 plot(AlaskaMap, col = colorPallette,border='grey',add=TRUE)
 legend('topright', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
@@ -237,7 +237,7 @@ legendText="Count of visits"
 shrinkLegend=0.7
 title="Visits"
 
-##plot(intermountain_zipMap,col='white',main=title)
+plot(intermountain_zipMap,col='white',main=title)
 plot(IntermounMap, col = colorPallette,border='grey',add=TRUE)
 legend('topright', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
@@ -291,7 +291,7 @@ legendText="Count of visits"
 shrinkLegend=0.7
 title="Visits"
 
-##plot(midwest_zipMap,col='white',main=title)
+plot(midwest_zipMap,col='white',main=title)
 plot(midWMap, col = colorPallette,border='grey',add=TRUE)
 legend('topright', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
@@ -350,8 +350,62 @@ legendText="Count of visits"
 shrinkLegend=0.7
 title="Visits"
 
-##plot(nationalcap_zipMap,col='white',main=title)
+plot(nationalcap_zipMap,col='white',main=title)
 plot(natioCapMap, col = colorPallette,border='grey',add=TRUE)
+legend('topright', legend = names(attr(colorPallette, "table")), 
+       fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
+       bty = "n",
+       title=legendText)
+```
+
+3.1. Creating a Map
+Part 5: Define the input for the Northeast Region Map:
+```{r, eval=FALSE}
+varToPlot=northEMap$Recreation_Visits
+```
+
+3.1. Creating a Map
+Part 5.1: Get colors and intervals for the Northeast Region Map:
+```{r}
+compressedMap_northeast="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/northeast.zip"
+```
+
+```{r}
+temp=tempfile()
+download.file(compressedMap, temp)
+unzip(temp)
+```
+```{r}
+(maps=list.files(pattern = 'shp'))
+```
+```{r}
+northeast_zipMap <- rgdal::readOGR("nps_boundary/northeast.shp",stringsAsFactors=F)
+```
+```{r}
+names(northeast_zipMap)
+```
+```{r}
+plot(northeast_zipMap)
+```
+```{r, eval=FALSE}
+library(RColorBrewer)
+library(classInt)
+numberOfClasses = 3
+colorForScale='YlGnBu'
+colors = brewer.pal(numberOfClasses, colorForScale)
+intervals <- classIntervals(varToPlot, numberOfClasses, 
+                            style = "quantile",
+                            dataPrecision=2)
+colorPallette <- findColours(intervals, colors)
+```
+
+```{r}
+legendText="Count of visits"
+shrinkLegend=0.7
+title="Visits"
+
+plot(northeast_zipMap,col='white',main=title)
+plot(northEMap, col = colorPallette,border='grey',add=TRUE)
 legend('topright', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
        bty = "n",
