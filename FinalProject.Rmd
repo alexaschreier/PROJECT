@@ -8,7 +8,7 @@ Title: Computational Thinking for Governance Analytics, Final Project
 
 By: Alexa Schreier
 
-Date: 27 February 2018
+Date: 4 March 2018
 
 1. Getting the Data
 The data used for this report was collected and made available by the United States' National Park Service. The data can be found and accessed at the following site: [(https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Annual%20Visitation%20by%20Park%20Type%20or%20Region%20(1979%20-%20Last%20Calendar%20Year))] 
