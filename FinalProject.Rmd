@@ -32,15 +32,16 @@ The data explored below includes records of all areas owned and managed by the U
 #View the beginning of the data set
 head(Parkdata)
 ```
+
 ```{r}
 #View the names of the data points
 names(Parkdata)
 ```
+
 ```{r}
 #View the structure of the data 
 str(Parkdata)
 ```
-
 ```{r}
 #View a summary of the data
 summary(Parkdata)
@@ -70,12 +71,10 @@ length(Parkdata$Park_Name)==length(unique(Parkdata$Park_Name))
 ```{r}
 Parkdata[duplicated(Parkdata$Park_Name),]
 ```
-
 ```{r}
 repeated='Klondike Gold Rush'
 Parkdata[Parkdata$Park_Name ==repeated,]
 ```
-
 ```{r}
 repeated='Klondike Gold Rush'
 Parkdata[(Parkdata$Park_Name ==repeated) & (Parkdata$Region =='Pacific West Region'),]
@@ -99,27 +98,21 @@ temp=tempfile()
 download.file(compressedMap, temp)
 unzip(temp)
 ```
-
 ```{r}
 (maps=list.files(pattern = 'shp'))
 ```
-
 ```{r}
 parkzipMap <- rgdal::readOGR("nps_boundary/nps_boundary.shp",stringsAsFactors=F)
 ```
-
 ```{r}
 names(parkzipMap)
 ```
-
 ```{r}
 length(unique(parkzipMap$UNIT_NAME))
 ```
-
 ```{r}
 length(parkzipMap$UNIT_NAME)
 ```
-
 ```{r}
 table(sub$UNIT_TYPE)
 ```
@@ -134,7 +127,6 @@ names(totalMap)
 ```{r}
 table(totalMap$Region)
 ```
-
 ```{r}
 AlaskaMap=totalMap[totalMap$Region %in% 'Alaska Region',]
 IntermounMap=totalMap[totalMap$Region %in% 'Intermountain Region',]
@@ -146,13 +138,13 @@ southEMap=totalMap[totalMap$Region %in% 'Southeast Region',]
 ```
 
 3.1. Creating a Map
-Part 1: Define the input for Alaska Region Map:
+Part 1: Define the input for the Alaska Region Map:
 ```{r, eval=FALSE}
 varToPlot=AlaskaMap$Recreation_Visits
 ```
 
 3.1. Creating a Map
-Part 1.1: Get colors and intervals for Alaska Region Map:
+Part 1.1: Get colors and intervals for the Alaska Region Map:
 ```{r}
 compressedMap_alaska="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/alaska.zip"
 ```
@@ -174,7 +166,6 @@ names(alaska_zipMap)
 ```{r}
 plot(alaska_zipMap)
 ```
-
 ```{r, eval=FALSE}
 library(RColorBrewer)
 library(classInt)
@@ -192,23 +183,43 @@ legendText="Count of visits"
 shrinkLegend=0.7
 title="Visits"
 
-plot(alaska_zipMap,col='white',main=title)
+##plot(alaska_zipMap,col='white',main=title)
 plot(AlaskaMap, col = colorPallette,border='grey',add=TRUE)
 legend('topright', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
        bty = "n",
        title=legendText)
-dev.off()
 ```
 
 3.1. Creating a Map
-Part 2: Define the input for Intermountain Region Map
+Part 2: Define the input for Intermountain Region Map:
 ```{r, eval=FALSE}
 varToPlot=IntermounMap$Recreation_Visits
 ```
 
 3.1. Creating a Map
-Part 2.1: Get colors and intervals for Intermountain Region Map
+Part 2.1: Get colors and intervals for Intermountain Region Map:
+```{r}
+compressedMap_intermountain="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/intermountain.zip"
+```
+
+```{r}
+temp=tempfile()
+download.file(compressedMap, temp)
+unzip(temp)
+```
+```{r}
+(maps=list.files(pattern = 'shp'))
+```
+```{r}
+intermountain_zipMap <- rgdal::readOGR("nps_boundary/intermountain.shp",stringsAsFactors=F)
+```
+```{r}
+names(intermountain_zipMap)
+```
+```{r}
+plot(intermountain_zipMap)
+```
 ```{r, eval=FALSE}
 library(RColorBrewer)
 library(classInt)
@@ -226,7 +237,8 @@ legendText="Count of visits"
 shrinkLegend=0.7
 title="Visits"
 
-plot(IntermounMap, col = colorPallette,border='grey',main=title)
+##plot(intermountain_zipMap,col='white',main=title)
+plot(IntermounMap, col = colorPallette,border='grey',add=TRUE)
 legend('topright', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
        bty = "n",
@@ -234,13 +246,34 @@ legend('topright', legend = names(attr(colorPallette, "table")),
 ```
 
 3.1. Creating a Map
-Part 3: Define the input for Midwest Region Map
+Part 3: Define the input for the Midwest Region Map:
 ```{r, eval=FALSE}
 varToPlot=midWMap$Recreation_Visits
 ```
 
 3.1. Creating a Map
-Part 3.1: Get colors and intervals for Midwest Region Map
+Part 3.1: Get colors and intervals for the Midwest Region Map:
+```{r}
+compressedMap_midwest="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/midwest.zip"
+```
+
+```{r}
+temp=tempfile()
+download.file(compressedMap, temp)
+unzip(temp)
+```
+```{r}
+(maps=list.files(pattern = 'shp'))
+```
+```{r}
+midwest_zipMap <- rgdal::readOGR("nps_boundary/midwest.shp",stringsAsFactors=F)
+```
+```{r}
+names(midwest_zipMap)
+```
+```{r}
+plot(midwest_zipMap)
+```
 ```{r, eval=FALSE}
 library(RColorBrewer)
 library(classInt)
@@ -258,7 +291,8 @@ legendText="Count of visits"
 shrinkLegend=0.7
 title="Visits"
 
-plot(midWMap, col = colorPallette,border='grey',main=title)
+##plot(midwest_zipMap,col='white',main=title)
+plot(midWMap, col = colorPallette,border='grey',add=TRUE)
 legend('topright', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
        bty = "n",
@@ -266,13 +300,39 @@ legend('topright', legend = names(attr(colorPallette, "table")),
 ```
 
 3.1. Creating a Map
-Part 4: Define the input for Pacific West Region Map
+Part 4: Define the input for the National Capital Region Map:
 ```{r, eval=FALSE}
-varToPlot=pacWestMap$Recreation_Visits
+varToPlot=natioCapMap$Recreation_Visits
 ```
 
 3.1. Creating a Map
-Part 4.1: Get colors and intervals for Pacific West Region Map
+Part 4.1: Get colors and intervals for the National Capital Region Map:
+```{r}
+compressedMap_nationalcap="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/capital.zip"
+```
+
+```{r}
+temp=tempfile()
+download.file(compressedMap, temp)
+unzip(temp)
+```
+
+```{r}
+(maps=list.files(pattern = 'shp'))
+```
+
+```{r}
+nationalcap_zipMap <- rgdal::readOGR("nps_boundary/capital.shp",stringsAsFactors=F)
+```
+
+```{r}
+names(nationalcap_zipMap)
+```
+
+```{r}
+plot(nationalcap_zipMap)
+```
+
 ```{r, eval=FALSE}
 library(RColorBrewer)
 library(classInt)
@@ -290,7 +350,8 @@ legendText="Count of visits"
 shrinkLegend=0.7
 title="Visits"
 
-plot(pacWestMap, col = colorPallette,border='grey',main=title)
+##plot(nationalcap_zipMap,col='white',main=title)
+plot(natioCapMap, col = colorPallette,border='grey',add=TRUE)
 legend('topright', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
        bty = "n",
