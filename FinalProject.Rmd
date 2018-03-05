@@ -460,7 +460,7 @@ title="Visits"
 
 plot(pacificwest_zipMap,col='white',main=title)
 plot(pacWestMap, col = colorPallette,border='grey',add=TRUE)
-legend('topright', legend = names(attr(colorPallette, "table")), 
+legend('topleft', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
        bty = "n",
        title=legendText)
