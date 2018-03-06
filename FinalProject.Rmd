@@ -8,7 +8,7 @@ Title: Computational Thinking for Governance Analytics, Final Project
 
 By: Alexa Schreier
 
-Date: 4 March 2018
+Date: 6 March 2018
 
 1. Getting the Data
 The data used for this report was collected and made available by the United States' National Park Service. The data can be found and accessed at the following site: [(https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Annual%20Visitation%20by%20Park%20Type%20or%20Region%20(1979%20-%20Last%20Calendar%20Year))] 
@@ -32,12 +32,10 @@ The data explored below includes records of all areas owned and managed by the U
 #View the beginning of the data set
 head(Parkdata)
 ```
-
 ```{r}
 #View the names of the data points
 names(Parkdata)
 ```
-
 ```{r}
 #View the structure of the data 
 str(Parkdata)
@@ -140,55 +138,55 @@ southEMap=totalMap[totalMap$Region %in% 'Southeast Region',]
 3.1. Creating a Map
 Part 1: Define the input for the Alaska Region Map:
 ```{r, eval=FALSE}
-varToPlot=AlaskaMap$Recreation_Visits
+#varToPlot=AlaskaMap$Recreation_Visits
 ```
 
 3.1. Creating a Map
 Part 1.1: Get colors and intervals for the Alaska Region Map:
 ```{r}
-compressedMap_alaska="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/alaska.zip"
+#compressedMap_alaska="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/alaska.zip"
 ```
 
 ```{r}
-temp=tempfile()
-download.file(compressedMap, temp)
-unzip(temp)
+#temp=tempfile()
+#download.file(compressedMap_alaska, temp)
+#unzip(temp)
 ```
 ```{r}
-(maps=list.files(pattern = 'shp'))
+#(maps=list.files(pattern = 'shp'))
 ```
 ```{r}
-alaska_zipMap <- rgdal::readOGR("nps_boundary/alaska.shp",stringsAsFactors=F)
+#alaska_zipMap <- rgdal::readOGR("nps_boundary/alaska.shp",stringsAsFactors=F)
 ```
 ```{r}
-names(alaska_zipMap)
+#names(alaska_zipMap)
 ```
 ```{r}
-plot(alaska_zipMap)
+#plot(alaska_zipMap)
 ```
 ```{r, eval=FALSE}
-library(RColorBrewer)
-library(classInt)
-numberOfClasses = 3
-colorForScale='YlGnBu'
-colors = brewer.pal(numberOfClasses, colorForScale)
-intervals <- classIntervals(varToPlot, numberOfClasses, 
-                            style = "quantile",
-                            dataPrecision=2)
-colorPallette <- findColours(intervals, colors)
+#library(RColorBrewer)
+#library(classInt)
+#numberOfClasses = 3
+#colorForScale='YlGnBu'
+#colors = brewer.pal(numberOfClasses, colorForScale)
+#intervals <- classIntervals(varToPlot, numberOfClasses, 
+#                            style = "quantile",
+#                            dataPrecision=2)
+#colorPallette <- findColours(intervals, colors)
 ```
 
 ```{r}
-legendText="Count of visits"
-shrinkLegend=0.7
-title="Visits"
+#legendText="Count of visits"
+#shrinkLegend=0.7
+#title="Visits"
 
-plot(alaska_zipMap,col='white',main=title)
-plot(AlaskaMap, col = colorPallette,border='grey',add=TRUE)
-legend('topright', legend = names(attr(colorPallette, "table")), 
-       fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
-       bty = "n",
-       title=legendText)
+#plot(alaska_zipMap,col='white',main=title)
+#plot(AlaskaMap, col = colorPallette,border='grey',add=TRUE)
+#legend('topright', legend = names(attr(colorPallette, "table")), 
+#       fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
+#       bty = "n",
+#       title=legendText)
 ```
 
 3.1. Creating a Map
@@ -205,7 +203,7 @@ compressedMap_intermountain="https://github.com/alexaschreier/PROJECT/raw/master
 
 ```{r}
 temp=tempfile()
-download.file(compressedMap, temp)
+download.file(compressedMap_intermountain, temp)
 unzip(temp)
 ```
 ```{r}
@@ -259,7 +257,7 @@ compressedMap_midwest="https://github.com/alexaschreier/PROJECT/raw/master/nps_b
 
 ```{r}
 temp=tempfile()
-download.file(compressedMap, temp)
+download.file(compressedMap_midwest, temp)
 unzip(temp)
 ```
 ```{r}
@@ -313,7 +311,7 @@ compressedMap_nationalcap="https://github.com/alexaschreier/PROJECT/raw/master/n
 
 ```{r}
 temp=tempfile()
-download.file(compressedMap, temp)
+download.file(compressedMap_nationalcap, temp)
 unzip(temp)
 ```
 
@@ -352,7 +350,7 @@ title="Visits"
 
 plot(nationalcap_zipMap,col='white',main=title)
 plot(natioCapMap, col = colorPallette,border='grey',add=TRUE)
-legend('topright', legend = names(attr(colorPallette, "table")), 
+legend('topleft', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
        bty = "n",
        title=legendText)
@@ -372,7 +370,7 @@ compressedMap_northeast="https://github.com/alexaschreier/PROJECT/raw/master/nps
 
 ```{r}
 temp=tempfile()
-download.file(compressedMap, temp)
+download.file(compressedMap_northeast, temp)
 unzip(temp)
 ```
 ```{r}
@@ -426,7 +424,7 @@ compressedMap_pacificwest="https://github.com/alexaschreier/PROJECT/raw/master/n
 
 ```{r}
 temp=tempfile()
-download.file(compressedMap, temp)
+download.file(compressedMap_pacificwest, temp)
 unzip(temp)
 ```
 ```{r}
@@ -480,7 +478,7 @@ compressedMap_southeast="https://github.com/alexaschreier/PROJECT/raw/master/nps
 
 ```{r}
 temp=tempfile()
-download.file(compressedMap, temp)
+download.file(compressedMap_southeast, temp)
 unzip(temp)
 ```
 ```{r}
