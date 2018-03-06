@@ -11,7 +11,7 @@ Date: 6 March 2018
 
 1. Getting the Data
 The data used for this report was collected and made available by the United States' National Park Service. The data can be found and accessed at the following site: [(https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Annual%20Visitation%20by%20Park%20Type%20or%20Region%20(1979%20-%20Last%20Calendar%20Year))] 
-```{r eval=TRUE, echo=FALSE}
+```{r, eval=TRUE}
 #Import data into RStudio library
 library(readxl)
 library(cluster)
@@ -27,19 +27,19 @@ Parkdata = read_excel(temp, sheet =1)
 
 2. Exploring the Data
 The data explored below includes records of all areas owned and managed by the United States' National Park Service. The data is broken out by region, park name, and park type. For each location, the Park Service has tracked the number of recreation visits to that location, as well as the various ways in which people spend the night in the park, from backcountry or tent campers, to RV campers or concessioner lodging. Exploring the data set allows us to better understand the size of our data set and the variables that are included. There are a number of different ways to view the data, each of which is outlined below. 
-```{r eval=T, echo=FALSE}
+```{r, eval=TRUE}
 #View the beginning of the data set
 head(Parkdata)
 ```
-```{r, echo=FALSE}
+```{r, eval=TRUE}
 #View the names of the data points
 names(Parkdata)
 ```
-```{r}
+```{r, eval=TRUE}
 #View the structure of the data 
 str(Parkdata)
 ```
-```{r}
+```{r, eval=TRUE}
 #View a summary of the data
 summary(Parkdata)
 ```
@@ -49,34 +49,34 @@ It's important to clean the data to make sure all variable names appear as desir
 
 2.1 Cleaning the Data
 Part 1: Correcting Variable Names
-```{r eval=T}
+```{r, eval=TRUE}
 #These commands correct the variable names:
 names(Parkdata)=gsub("\r\n", " ", names(Parkdata))
 names(Parkdata)=gsub(" ", "_", names(Parkdata))
 ```
 
-```{r}
+```{r, eval=TRUE}
 #Test to see that names have been corrected
 names(Parkdata)
 ```
 
 2.1 Cleaning the Data
 Part 2. Removing Duplicates 
-```{r}
+```{r, eval=TRUE}
 length(Parkdata$Park_Name)==length(unique(Parkdata$Park_Name))
 ```
-```{r}
+```{r, eval=TRUE}
 Parkdata[duplicated(Parkdata$Park_Name),]
 ```
-```{r}
+```{r, eval=TRUE}
 repeated='Klondike Gold Rush'
 Parkdata[Parkdata$Park_Name ==repeated,]
 ```
-```{r}
+```{r, eval=TRUE}
 repeated='Klondike Gold Rush'
 Parkdata[(Parkdata$Park_Name ==repeated) & (Parkdata$Region =='Pacific West Region'),]
 ```
-```{r}
+```{r, eval=TRUE}
 repeated='Klondike Gold Rush'
 Parkdata=Parkdata[!((Parkdata$Park_Name ==repeated) & (Parkdata$Region =='Pacific West Region')),]
 ```
@@ -86,43 +86,43 @@ Graphing the data we're using allows us to better understand and visualize relat
 
 3.1 Creating a Map
 Mapping our data allows us to visualize the way in which visitors are interacting with public land mangaged by the National Park Service.
-```{r}
+```{r, eval=TRUE}
 compressedMap="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary.zip"
 ```
 
-```{r}
+```{r, eval=TRUE}
 temp=tempfile()
 download.file(compressedMap, temp)
 unzip(temp)
 ```
-```{r}
+```{r, eval=TRUE}
 (maps=list.files(pattern = 'shp'))
 ```
-```{r}
+```{r, eval=TRUE}
 parkzipMap <- rgdal::readOGR("nps_boundary/nps_boundary.shp",stringsAsFactors=F)
 ```
-```{r}
+```{r, eval=TRUE}
 names(parkzipMap)
 ```
-```{r}
+```{r, eval=TRUE}
 length(unique(parkzipMap$UNIT_NAME))
 ```
-```{r}
+```{r, eval=TRUE}
 length(parkzipMap$UNIT_NAME)
 ```
 
-```{r}
+```{r, eval=TRUE}
 row.names(Parkdata)=NULL
 totalMap=merge(parkzipMap,Parkdata,by.x='UNIT_NAME',by.y='Park_Name')
 ```
 
-```{r}
+```{r, eval=TRUE}
 names(totalMap)
 ```
-```{r}
+```{r, eval=TRUE}
 table(totalMap$Region)
 ```
-```{r}
+```{r, eval=TRUE}
 AlaskaMap=totalMap[totalMap$Region %in% 'Alaska Region',]
 IntermounMap=totalMap[totalMap$Region %in% 'Intermountain Region',]
 midWMap=totalMap[totalMap$Region %in% 'Midwest Region',]
@@ -134,34 +134,34 @@ southEMap=totalMap[totalMap$Region %in% 'Southeast Region',]
 
 3.1. Creating a Map
 Part 1: Define the input for the Alaska Region Map:
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 #varToPlot=AlaskaMap$Recreation_Visits
 ```
 
 3.1. Creating a Map
 Part 1.1: Get colors and intervals for the Alaska Region Map:
-```{r}
+```{r, eval=TRUE}
 #compressedMap_alaska="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/alaska.zip"
 ```
 
-```{r}
+```{r, eval=TRUE}
 #temp=tempfile()
 #download.file(compressedMap_alaska, temp)
 #unzip(temp)
 ```
-```{r}
+```{r, eval=TRUE}
 #(maps=list.files(pattern = 'shp'))
 ```
-```{r}
+```{r, eval=TRUE}
 #alaska_zipMap <- rgdal::readOGR("nps_boundary/alaska.shp",stringsAsFactors=F)
 ```
-```{r}
+```{r, eval=TRUE}
 #names(alaska_zipMap)
 ```
-```{r}
+```{r, eval=TRUE}
 #plot(alaska_zipMap)
 ```
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 #library(RColorBrewer)
 #library(classInt)
 #numberOfClasses = 3
@@ -173,7 +173,7 @@ Part 1.1: Get colors and intervals for the Alaska Region Map:
 #colorPallette <- findColours(intervals, colors)
 ```
 
-```{r}
+```{r, eval=TRUE}
 #legendText="Count of visits"
 #shrinkLegend=0.7
 #title="Visits"
@@ -194,26 +194,26 @@ varToPlot=IntermounMap$Recreation_Visits
 
 3.1. Creating a Map
 Part 2.1: Get colors and intervals for Intermountain Region Map:
-```{r}
+```{r, eval=TRUE}
 compressedMap_intermountain="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/intermountain.zip"
 ```
 
-```{r}
+```{r, eval=TRUE}
 temp=tempfile()
 download.file(compressedMap_intermountain, temp)
 unzip(temp)
 ```
-```{r}
+```{r, eval=TRUE}
 (maps=list.files(pattern = 'shp'))
 ```
-```{r}
+```{r, eval=TRUE}
 intermountain_zipMap <- rgdal::readOGR("nps_boundary/intermountain.shp",stringsAsFactors=F)
 ```
 
-```{r}
+```{r, eval=TRUE}
 names(intermountain_zipMap)
 ```
-```{r}
+```{r, eval=TRUE}
 plot(intermountain_zipMap)
 ```
 ```{r, eval=TRUE}
@@ -243,34 +243,34 @@ legend('topright', legend = names(attr(colorPallette, "table")),
 
 3.1. Creating a Map
 Part 3: Define the input for the Midwest Region Map:
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 varToPlot=midWMap$Recreation_Visits
 ```
 
 3.1. Creating a Map
 Part 3.1: Get colors and intervals for the Midwest Region Map:
-```{r}
+```{r, eval=TRUE}
 compressedMap_midwest="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/midwest.zip"
 ```
 
-```{r}
+```{r, eval=TRUE}
 temp=tempfile()
 download.file(compressedMap_midwest, temp)
 unzip(temp)
 ```
-```{r}
+```{r, eval=TRUE}
 (maps=list.files(pattern = 'shp'))
 ```
-```{r}
+```{r, eval=TRUE}
 midwest_zipMap <- rgdal::readOGR("nps_boundary/midwest.shp",stringsAsFactors=F)
 ```
-```{r}
+```{r, eval=TRUE}
 names(midwest_zipMap)
 ```
-```{r}
+```{r, eval=TRUE}
 plot(midwest_zipMap)
 ```
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 library(RColorBrewer)
 library(classInt)
 numberOfClasses = 3
@@ -282,7 +282,7 @@ intervals <- classIntervals(varToPlot, numberOfClasses,
 colorPallette <- findColours(intervals, colors)
 ```
 
-```{r}
+```{r, eval=TRUE}
 legendText="Count of visits"
 shrinkLegend=0.7
 title="Midwest Region"
@@ -297,33 +297,33 @@ legend('topright', legend = names(attr(colorPallette, "table")),
 
 3.1. Creating a Map
 Part 4: Define the input for the National Capital Region Map:
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 varToPlot=natioCapMap$Recreation_Visits
 ```
 
 3.1. Creating a Map
 Part 4.1: Get colors and intervals for the National Capital Region Map:
-```{r}
+```{r, eval=TRUE}
 compressedMap_nationalcap="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/capital.zip"
 ```
 
-```{r}
+```{r, eval=TRUE}
 temp=tempfile()
 download.file(compressedMap_nationalcap, temp)
 unzip(temp)
 ```
-```{r}
+```{r, eval=TRUE}
 (maps=list.files(pattern = 'shp'))
 ```
 
-```{r}
+```{r, eval=TRUE}
 nationalcap_zipMap <- rgdal::readOGR("nps_boundary/capital.shp",stringsAsFactors=F)
 ```
-```{r}
+```{r, eval=TRUE}
 names(nationalcap_zipMap)
 ```
 
-```{r}
+```{r, eval=TRUE}
 plot(nationalcap_zipMap)
 ```
 
@@ -339,7 +339,7 @@ intervals <- classIntervals(varToPlot, numberOfClasses,
 colorPallette <- findColours(intervals, colors)
 ```
 
-```{r}
+```{r, eval=TRUE}
 legendText="Count of visits"
 shrinkLegend=0.7
 title="National Capital Region"
@@ -354,35 +354,39 @@ legend('topleft', legend = names(attr(colorPallette, "table")),
 
 3.1. Creating a Map
 Part 5: Define the input for the Northeast Region Map:
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 varToPlot=northEMap$Recreation_Visits
 ```
 
 3.1. Creating a Map
 Part 5.1: Get colors and intervals for the Northeast Region Map:
-```{r}
+```{r, eval=TRUE}
 compressedMap_northeast="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/northeast.zip"
 ```
 
-```{r}
+```{r, eval=TRUE}
 temp=tempfile()
 download.file(compressedMap_northeast, temp)
 unzip(temp)
 ```
-```{r}
+
+```{r, eval=TRUE}
 (maps=list.files(pattern = 'shp'))
 ```
-```{r}
+
+```{r, eval=TRUE}
 northeast_zipMap <- rgdal::readOGR("nps_boundary/northeast.shp",stringsAsFactors=F)
 ```
-```{r}
+
+```{r, eval=TRUE}
 names(northeast_zipMap)
 ```
-```{r}
+
+```{r, eval=TRUE}
 plot(northeast_zipMap)
 ```
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 library(RColorBrewer)
 library(classInt)
 numberOfClasses = 3
@@ -394,7 +398,7 @@ intervals <- classIntervals(varToPlot, numberOfClasses,
 colorPallette <- findColours(intervals, colors)
 ```
 
-```{r}
+```{r, eval=TRUE}
 legendText="Count of visits"
 shrinkLegend=0.7
 title="Northeast Region"
@@ -409,36 +413,39 @@ legend('topright', legend = names(attr(colorPallette, "table")),
 
 3.1. Creating a Map
 Part 6: Define the input for the Pacific West Region Map:
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 varToPlot=pacWestMap$Recreation_Visits
 ```
 
 3.1. Creating a Map
 Part 6.1: Get colors and intervals for the Pacific West Region Map:
-```{r}
+```{r, eval=TRUE}
 compressedMap_pacificwest="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/pacificwest.zip"
 ```
 
-```{r}
+```{r, eval=TRUE}
 temp=tempfile()
 download.file(compressedMap_pacificwest, temp)
 unzip(temp)
 ```
 
-```{r}
+```{r, eval=TRUE}
 (maps=list.files(pattern = 'shp'))
 ```
 
-```{r}
+```{r, eval=TRUE}
 pacificwest_zipMap <- rgdal::readOGR("nps_boundary/pacificwest.shp",stringsAsFactors=F)
 ```
-```{r}
+
+```{r, eval=TRUE}
 names(pacificwest_zipMap)
 ```
-```{r}
+
+```{r, eval=TRUE}
 plot(pacificwest_zipMap)
 ```
-```{r, eval=FALSE}
+
+```{r, eval=TRUE}
 library(RColorBrewer)
 library(classInt)
 numberOfClasses = 3
@@ -450,7 +457,7 @@ intervals <- classIntervals(varToPlot, numberOfClasses,
 colorPallette <- findColours(intervals, colors)
 ```
 
-```{r}
+```{r, eval=TRUE}
 #legendText="Count of visits"
 #shrinkLegend=0.7
 #title="Pacific West Region"
@@ -465,34 +472,39 @@ colorPallette <- findColours(intervals, colors)
 
 3.1. Creating a Map
 Part 7: Define the input for the South East Region Map:
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 varToPlot=southEMap$Recreation_Visits
 ```
 
 3.1. Creating a Map
 Part 7.1: Get colors and intervals for the South East Region Map:
-```{r}
+```{r, eval=TRUE}
 compressedMap_southeast="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/southeast.zip"
 ```
 
-```{r}
+```{r, eval=TRUE}
 temp=tempfile()
 download.file(compressedMap_southeast, temp)
 unzip(temp)
 ```
-```{r}
+
+```{r, eval=TRUE}
 (maps=list.files(pattern = 'shp'))
 ```
-```{r}
+
+```{r, eval=TRUE}
 southeast_zipMap <- rgdal::readOGR("nps_boundary/southeast.shp",stringsAsFactors=F)
 ```
-```{r}
+
+```{r, eval=TRUE}
 names(southeast_zipMap)
 ```
-```{r}
+
+```{r, eval=TRUE}
 plot(southeast_zipMap)
 ```
-```{r, eval=FALSE}
+
+```{r, eval=TRUE}
 library(RColorBrewer)
 library(classInt)
 numberOfClasses = 3
@@ -504,7 +516,7 @@ intervals <- classIntervals(varToPlot, numberOfClasses,
 colorPallette <- findColours(intervals, colors)
 ```
 
-```{r}
+```{r, eval=TRUE}
 legendText="Count of visits"
 shrinkLegend=0.7
 title="Visits"
