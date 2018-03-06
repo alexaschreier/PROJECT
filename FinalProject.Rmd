@@ -315,7 +315,6 @@ temp=tempfile()
 download.file(compressedMap_nationalcap, temp)
 unzip(temp)
 ```
-
 ```{r}
 (maps=list.files(pattern = 'shp'))
 ```
@@ -323,15 +322,12 @@ unzip(temp)
 ```{r}
 nationalcap_zipMap <- rgdal::readOGR("nps_boundary/capital.shp",stringsAsFactors=F)
 ```
-
 ```{r}
 names(nationalcap_zipMap)
 ```
-
 ```{r}
 plot(nationalcap_zipMap)
 ```
-
 ```{r, eval=FALSE}
 library(RColorBrewer)
 library(classInt)
@@ -455,7 +451,7 @@ colorPallette <- findColours(intervals, colors)
 ```{r}
 legendText="Count of visits"
 shrinkLegend=0.7
-title="Visits"
+title="Pacific West Region"
 
 plot(pacificwest_zipMap,col='white',main=title)
 plot(pacWestMap, col = colorPallette,border='grey',add=TRUE)
