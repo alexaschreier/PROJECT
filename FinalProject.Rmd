@@ -12,7 +12,7 @@ Date:  March 2018
 
 1. Getting the Data
 The data used for this report was collected and made available by the United States' National Park Service. The data can be found and accessed at the following site: [(https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Annual%20Visitation%20by%20Park%20Type%20or%20Region%20(1979%20-%20Last%20Calendar%20Year))] 
-```{r eval=TRUE}
+```{r eval=TRUE, echo=FALSE}
 #Import data into RStudio library
 library(readxl)
 library(cluster)
@@ -28,11 +28,11 @@ Parkdata = read_excel(temp, sheet =1)
 
 2. Exploring the Data
 The data explored below includes records of all areas owned and managed by the United States' National Park Service. The data is broken out by region, park name, and park type. For each location, the Park Service has tracked the number of recreation visits to that location, as well as the various ways in which people spend the night in the park, from backcountry or tent campers, to RV campers or concessioner lodging. Exploring the data set allows us to better understand the size of our data set and the variables that are included. There are a number of different ways to view the data, each of which is outlined below. 
-```{r eval=T}
+```{r eval=T, echo=FALSE}
 #View the beginning of the data set
 head(Parkdata)
 ```
-```{r}
+```{r, echo=FALSE}
 #View the names of the data points
 names(Parkdata)
 ```
@@ -382,6 +382,7 @@ names(northeast_zipMap)
 ```{r}
 plot(northeast_zipMap)
 ```
+
 ```{r, eval=FALSE}
 library(RColorBrewer)
 library(classInt)
