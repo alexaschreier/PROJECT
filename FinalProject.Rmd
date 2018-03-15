@@ -7,7 +7,7 @@ Title: Computational Thinking for Governance Analytics, Final Project
 
 By: Alexa Schreier
 
-Date: 6 March 2018
+Date: 8 March 2018
 
 1. Getting the Data
 The data used for this report was collected and made available by the United States' National Park Service. The data can be found and accessed at the following site: [(https://irma.nps.gov/Stats/SSRSReports/National%20Reports/Annual%20Visitation%20by%20Park%20Type%20or%20Region%20(1979%20-%20Last%20Calendar%20Year))] 
@@ -135,55 +135,60 @@ southEMap=totalMap[totalMap$Region %in% 'Southeast Region',]
 3.1. Creating a Map
 Part 1: Define the input for the Alaska Region Map:
 ```{r, eval=TRUE}
-#varToPlot=AlaskaMap$Recreation_Visits
+varToPlot=AlaskaMap$Recreation_Visits
 ```
 
 3.1. Creating a Map
 Part 1.1: Get colors and intervals for the Alaska Region Map:
 ```{r, eval=TRUE}
-#compressedMap_alaska="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/alaska.zip"
+compressedMap_alaska="https://github.com/alexaschreier/PROJECT/raw/master/nps_boundary/alaska.zip"
 ```
 
 ```{r, eval=TRUE}
-#temp=tempfile()
-#download.file(compressedMap_alaska, temp)
-#unzip(temp)
-```
-```{r, eval=TRUE}
-#(maps=list.files(pattern = 'shp'))
-```
-```{r, eval=TRUE}
-#alaska_zipMap <- rgdal::readOGR("nps_boundary/alaska.shp",stringsAsFactors=F)
-```
-```{r, eval=TRUE}
-#names(alaska_zipMap)
-```
-```{r, eval=TRUE}
-#plot(alaska_zipMap)
-```
-```{r, eval=TRUE}
-#library(RColorBrewer)
-#library(classInt)
-#numberOfClasses = 3
-#colorForScale='YlGnBu'
-#colors = brewer.pal(numberOfClasses, colorForScale)
-#intervals <- classIntervals(varToPlot, numberOfClasses, 
-#                            style = "quantile",
-#                            dataPrecision=2)
-#colorPallette <- findColours(intervals, colors)
+temp=tempfile()
+download.file(compressedMap_alaska, temp)
+unzip(temp)
 ```
 
 ```{r, eval=TRUE}
-#legendText="Count of visits"
-#shrinkLegend=0.7
-#title="Visits"
+(maps=list.files(pattern = 'shp'))
+```
 
-#plot(alaska_zipMap,col='white',main=title)
-#plot(AlaskaMap, col = colorPallette,border='grey',add=TRUE)
-#legend('topright', legend = names(attr(colorPallette, "table")), 
-#       fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
-#       bty = "n",
-#       title=legendText)
+```{r, eval=TRUE}
+alaska_zipMap <- rgdal::readOGR("nps_boundary/alaska.shp",stringsAsFactors=F)
+```
+
+```{r, eval=TRUE}
+names(alaska_zipMap)
+```
+
+```{r, eval=TRUE}
+plot(alaska_zipMap)
+```
+
+```{r, eval=TRUE}
+library(RColorBrewer)
+library(classInt)
+numberOfClasses = 3
+colorForScale='YlGnBu'
+colors = brewer.pal(numberOfClasses, colorForScale)
+intervals <- classIntervals(varToPlot, numberOfClasses, 
+                            style = "quantile",
+                            dataPrecision=2)
+colorPallette <- findColours(intervals, colors)
+```
+
+```{r, eval=TRUE}
+legendText="Count of visits"
+shrinkLegend=0.7
+title="Alasksa Region"
+
+plot(alaska_zipMap,col='white',main=title)
+plot(AlaskaMap, col = colorPallette,border=NA,add=TRUE)
+legend('topright', legend = names(attr(colorPallette, "table")), 
+       fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
+       bty = "n",
+       title=legendText)
 ```
 
 3.1. Creating a Map
@@ -203,9 +208,11 @@ temp=tempfile()
 download.file(compressedMap_intermountain, temp)
 unzip(temp)
 ```
+
 ```{r, eval=TRUE}
 (maps=list.files(pattern = 'shp'))
 ```
+
 ```{r, eval=TRUE}
 intermountain_zipMap <- rgdal::readOGR("nps_boundary/intermountain.shp",stringsAsFactors=F)
 ```
@@ -213,9 +220,11 @@ intermountain_zipMap <- rgdal::readOGR("nps_boundary/intermountain.shp",stringsA
 ```{r, eval=TRUE}
 names(intermountain_zipMap)
 ```
+
 ```{r, eval=TRUE}
 plot(intermountain_zipMap)
 ```
+
 ```{r, eval=TRUE}
 library(RColorBrewer)
 library(classInt)
@@ -234,7 +243,7 @@ shrinkLegend=0.7
 title="Intermountain Region"
 
 plot(intermountain_zipMap,col='white',main=title)
-plot(IntermounMap, col = colorPallette,border='grey',add=TRUE)
+plot(IntermounMap, col = colorPallette,border=NA,add=TRUE)
 legend('topright', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
        bty = "n",
@@ -258,18 +267,23 @@ temp=tempfile()
 download.file(compressedMap_midwest, temp)
 unzip(temp)
 ```
+
 ```{r, eval=TRUE}
 (maps=list.files(pattern = 'shp'))
 ```
+
 ```{r, eval=TRUE}
 midwest_zipMap <- rgdal::readOGR("nps_boundary/midwest.shp",stringsAsFactors=F)
 ```
+
 ```{r, eval=TRUE}
 names(midwest_zipMap)
 ```
+
 ```{r, eval=TRUE}
 plot(midwest_zipMap)
 ```
+
 ```{r, eval=TRUE}
 library(RColorBrewer)
 library(classInt)
@@ -288,7 +302,7 @@ shrinkLegend=0.7
 title="Midwest Region"
 
 plot(midwest_zipMap,col='white',main=title)
-plot(midWMap, col = colorPallette,border='grey',add=TRUE)
+plot(midWMap, col = colorPallette,border=NA,add=TRUE)
 legend('topright', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
        bty = "n",
@@ -312,6 +326,7 @@ temp=tempfile()
 download.file(compressedMap_nationalcap, temp)
 unzip(temp)
 ```
+
 ```{r, eval=TRUE}
 (maps=list.files(pattern = 'shp'))
 ```
@@ -319,6 +334,7 @@ unzip(temp)
 ```{r, eval=TRUE}
 nationalcap_zipMap <- rgdal::readOGR("nps_boundary/capital.shp",stringsAsFactors=F)
 ```
+
 ```{r, eval=TRUE}
 names(nationalcap_zipMap)
 ```
@@ -345,7 +361,7 @@ shrinkLegend=0.7
 title="National Capital Region"
 
 plot(nationalcap_zipMap,col='white',main=title)
-plot(natioCapMap, col = colorPallette,border='grey',add=TRUE)
+plot(natioCapMap, col = colorPallette,border=NA,add=TRUE)
 legend('topleft', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
        bty = "n",
@@ -404,7 +420,7 @@ shrinkLegend=0.7
 title="Northeast Region"
 
 plot(northeast_zipMap,col='white',main=title)
-plot(northEMap, col = colorPallette,border='grey',add=TRUE)
+plot(northEMap, col = colorPallette,border=NA,add=TRUE)
 legend('topright', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
        bty = "n",
@@ -458,16 +474,16 @@ colorPallette <- findColours(intervals, colors)
 ```
 
 ```{r, eval=TRUE}
-#legendText="Count of visits"
-#shrinkLegend=0.7
-#title="Pacific West Region"
+legendText="Count of visits"
+shrinkLegend=0.7
+title="Pacific West Region"
 
-#plot(pacificwest_zipMap,col='white',main=title)
-#plot(pacWestMap, col = colorPallette,border='grey',add=TRUE)
-#legend('topleft', legend = names(attr(colorPallette, "table")), 
-       #fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
-       #bty = "n",
-       #title=legendText)
+plot(pacificwest_zipMap,col='white',main=title)
+plot(pacWestMap, col = colorPallette,border=NA,add=TRUE)
+legend('topleft', legend = names(attr(colorPallette, "table")), 
+       fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
+       bty = "n",
+       title=legendText)
 ```
 
 3.1. Creating a Map
@@ -519,10 +535,10 @@ colorPallette <- findColours(intervals, colors)
 ```{r, eval=TRUE}
 legendText="Count of visits"
 shrinkLegend=0.7
-title="Visits"
+title="Southeast Region"
 
 plot(southeast_zipMap,col='white',main=title)
-plot(southEMap, col = colorPallette,border='grey',add=TRUE)
+plot(southEMap, col = colorPallette,border=NA,add=TRUE)
 legend('topright', legend = names(attr(colorPallette, "table")), 
        fill = attr(colorPallette, "palette"), cex = shrinkLegend, 
        bty = "n",
